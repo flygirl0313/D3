@@ -20,15 +20,15 @@
         font-size: 11px;
     }
     .bar {
-        fill: steelblue;
+        /* fill: steelblue; */
     }
     .legendPic{
-        fill: steelblue;
-        stroke: steelblue
+        /* fill: steelblue; */
+        /* stroke: steelblue */
     }
     .legendTxt{
-        font-size: 10px;
-        fill:#333        
+        /* font-size: 10px; */
+        /* fill:#333         */
     }
     .label{
         font-size:12px;
@@ -101,12 +101,13 @@
         .call(yAxis)
     
     // 画图
-    var barMargin = 40;   
+    var barMargin = 40;    
     svg.append("g")
         .attr("class", "bars")
         .selectAll(".bar")
         .data(data).enter()
         .append("rect").attr("class", "bar")
+        .attr('fill','steelblue')
         .attr("x", function(d) {  // x方向位置
             return xScale(d.name) + barMargin;
         })
@@ -128,7 +129,23 @@
         })
         .attr("height", function(d) {
             return height - padding - yScale(d.value);  //每个柱的高度
-        });
+        })
+    
+    //添加交互（注意不要添加到外层包裹的g元素上，添加到指定柱元素）
+    svg.select('.bars').selectAll(".bar") 
+        .on("mouseover",function(d,i){  
+            d3.select(this)  
+                .transition()  
+                .duration(200)  
+                .attr("fill","#528dff");  
+        })  
+        .on("mouseout",function(d,i){  
+            d3.select(this)  
+                .transition()  
+                .duration(200)  
+                .attr("fill","steelblue");  
+        }); 
+       
         
     //添加文本
     var rectPadding = 4
@@ -154,24 +171,44 @@
     // 绘制图例
     var legendWrap = svg.append("g");
     var series = legendWrap.append("g").attr("class", "series");
+    //图例位置
+    legendWrap.attr("transform", "translate("+(width-3*padding)+", "+(padding)+")");    
     //图例形状+样式
     series.attr("cursor","pointer")
     series.append("rect")
-            .attr("class","legendPic")                               
+            .attr('fill','steelblue')                              
             .attr("width", 20)
             .attr("height", 10)
             .attr("x", -18)  
             .attr("y", -5)                
             .attr("rx", 2)   
             .attr("ry", 2)  
+            .on('mouseover',function(){
+                d3.select(this)
+                .attr('fill','#528dff')
+            })
+            .on('mouseout',function(){
+                d3.select(this)
+                .attr('fill','steelblue')
+            })
+    
     //图例文本说明
     series.append("text")
-            .attr("class","legendTxt")
+            .attr('fill','#888')                              
+            .attr('font-size','12px')
             .attr("text-anchor", "start")
             .attr("dy", ".32em")
             .attr("dx", 12)
             .text("英文字母")
-    legendWrap.attr("transform", "translate("+(width-3*padding)+", "+(padding)+")");    
+            .on('mouseover',function(){
+                d3.select(this)
+                .attr('fill','#333')
+            })
+            .on('mouseout',function(){
+                d3.select(this)
+                .attr('fill','#888')
+            })
+    
     
     </script>
 </body>
