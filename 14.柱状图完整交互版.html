@@ -34,9 +34,32 @@
         font-size:12px;
         fill:#fff;
     }
+    #tooltip {
+        position:absolute;
+        width:100px;
+        height:auto;
+        padding:10px;
+        background-color:#fff;
+        border-radius:10px;
+        box-shadow:4px 4px 10px rgba(0,0,0,0.4);
+    }
+
+    #tooltip.hidden{
+        display:none;
+    }
+    #tooltip p{
+        margin:0;
+        font-family:sans-serif;
+        font-size:14px;
+        line-height:20px;
+    }
     </style>
 </head>
 <body> 
+    <div id="tooltip" class="hidden">
+        <p><strong>出现频率：</strong></p>
+        <p><span id="value"></span>次</p>
+    </div>
     <script>
     var width = 800;  
     var height = 400; 
@@ -138,12 +161,27 @@
                 .transition()  
                 .duration(100)  
                 .attr("fill","#528dff");  
+            
+            // tooltip
+            //取得提示显示的位置
+            var xPosition=parseFloat(d3.select(this).attr("x"))+xScale.bandwidth()/2;
+            var yPosition=parseFloat(d3.select(this).attr("y"))/2+height/2;
+
+            //创建提示条SVG
+            d3.select("#tooltip")
+                .style('display','block')
+                .style("left",xPosition+"px")
+                .style("top",yPosition+"px")
+                .select("#value")
+                .text(d.value); 
         })  
         .on("mouseout",function(d,i){  
             d3.select(this)  
                 .transition()  
                 .duration(100)  
-                .attr("fill","steelblue");  
+                .attr("fill","steelblue"); 
+            //移除提示条
+            d3.select("#tooltip").style('display','none')
         }); 
        
         
@@ -249,6 +287,9 @@
     series.on('click',function(){
         handleIsShow();
     })
+
+    //tooltip
+
     </script>
 </body>
 </html>
