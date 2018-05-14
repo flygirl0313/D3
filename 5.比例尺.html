@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础绘图-画布</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body> 
+    <script>
+        
+    /*线性比例尺：将 dataset 中最小的值，映射成 0；将最大的值，映射成 300。*/
+    var dataset = [1.2, 2.3, 0.9, 1.5, 3.3];  //数据（表示矩形的宽度）
+    var min = d3.min(dataset);   //取数据中的最大值
+    var max = d3.max(dataset);   //取数据中的最小值
+
+    //d3.scale.linear() 的返回值，是可以当做函数来使用的。因此，才有这样的用法：linear(0.9)。
+    var linear = d3.scaleLinear()
+        .domain([min, max])   //domain()设定比例尺的定义域
+        .range([0, 300]);     //range() 设定比例尺的值域
+
+        linear(0.9);    //返回 0
+        linear(2.3);    //返回 175
+        linear(3.3);    //返回 300
+    
+    /*序数比例尺：*/
+    var index = [0, 1, 2, 3, 4];
+    var color = ["red", "blue", "green", "yellow", "black"];
+
+    var ordinal = d3.scaleBand()  // 生成序数比例尺
+        .domain(index)
+        .range(color);
+
+    ordinal(0);     // 返回 red
+    ordinal(2);     // 返回 green
+    ordinal(4);     // 返回 black
+    </script>
+</body>
+</html>

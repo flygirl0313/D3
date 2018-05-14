@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择元素/绑定元素</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+    <p>Hello World </p>
+    <p>a</p>
+    <p>b</p>
+    
+    <script>
+    /*  选择元素：
+        选择集：d3.select() 或 d3.selectAll() 选择元素后返回的对象，就是选择集；
+    */
+
+    var body = d3.select("body");
+    var p = body.selectAll("p");
+    var str = 'beautiful'
+    var arr = ['i','love','u']
+    
+    p.datum(str);
+    p.data(arr)
+    p.text(function(d, i){
+        return "第 "+ i + " 个元素绑定的数据是 " + d;
+    });
+    //链式调用
+    p.data(arr).text(function(d,i){
+        return "第 "+ i + " 个元素绑定的数据是 " + d;
+    })
+    </script>
+</body>
+</html>

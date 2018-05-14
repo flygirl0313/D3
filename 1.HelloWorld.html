@@ -1,0 +1,23 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HelloWorld</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+    <p>Hello World </p>
+    <script>
+    /*  选择集：d3.select() 或 d3.selectAll() 选择元素后返回的对象，就是选择集；
+        选择<body>中所有的<p>，其文本内容为 www.ourd3js.com，选择集保存在变量 p 中
+    */
+    var p = d3.select("body")
+            .selectAll("p")
+            // .text("我最美");
+    //修改段落的颜色和字体大小
+        p.style("color","#fff")
+         .style("background","pink")       
+         .style("font-size","28px");
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>柱状图</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+    body{
+        padding: 30px;
+    }
+    .axis path,
+    .axis line{
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+
+    .axis text {
+        font-family: sans-serif;
+        font-size: 11px;
+    }
+    .bar {
+        fill: steelblue;
+    }
+    .legendPic{
+        fill: steelblue;
+        stroke: steelblue
+    }
+    .legendTxt{
+        font-size: 10px;
+        fill:#333        
+    }
+    .label{
+        font-size:12px;
+        fill:#fff;
+    }
+    </style>
+</head>
+<body> 
+    <script>
+    var width = 800;  
+    var height = 400; 
+    var padding = 30;  
+ 
+    //画布
+    var svg = d3.select("body")     
+        .append("svg")              
+        .attr("width", width)      //设定高度
+        .attr("height", height)      //设定高度        
+
+    //数据
+    var data = [
+        {
+            name:"A",
+            value: 80
+        },{
+            name:"B",
+            value: 110
+        },{
+            name:"C",
+            value: 90
+        },{
+            name:"D",
+            value: 67
+        },{
+            name:"E",
+            value: 89
+        },{
+            name:"F",
+            value: 77
+        },
+    ]   
+
+    //定义比例尺
+    var xScale = d3.scaleBand()
+        .domain(data.map(function(d) {return d.name;}))
+        .range([padding,width-padding*2]);
+        
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d) {return d.value;})])
+        .range([height-padding,padding]);
+    
+    //定义坐标轴
+    var xAxis = d3.axisBottom() //坐标轴的位置
+        .scale(xScale)          //指定比例尺
+        .ticks(data.length)     //指定刻度的数量 
+
+     var yAxis = d3.axisLeft()  
+        .scale(yScale)  
+        .ticks(data.length);      
+
+    //添加坐标轴
+    svg.append("g")
+        .attr("class","axis")
+        .call(xAxis)
+        .attr("transform", "translate(0,"+(height-padding)+")")
+                 
+    svg.append("g")
+        .attr("class","axis")
+        .attr("transform","translate("+padding+",0)","rotate(-180deg)")
+        .call(yAxis)
+    
+    // 画图
+    var barMargin = 40;   
+    svg.append("g")
+        .attr("class", "bars")
+        .selectAll(".bar")
+        .data(data).enter()
+        .append("rect").attr("class", "bar")
+        .attr("x", function(d) {  // x方向位置
+            return xScale(d.name) + barMargin;
+        })
+        .attr("width", xScale.bandwidth() -  2 * barMargin)  //每个柱的宽度
+        .attr("y", function(d) { // y方向位置
+            return yScale(d.value); 
+        })
+        .attr("height", function(d) {
+            return height - padding - yScale(d.value);  //每个柱的高度
+        });
+    //添加文本
+    var rectPadding = 4
+    var texts = svg.selectAll(".label")
+        .data(data).enter()
+        .append("text")
+        .attr("class","label")
+        .attr("transform","translate(" + padding + "," + padding + ")")        
+        .attr("x", function(d,i){
+            return xScale(d.name);
+        } )
+        .attr("y",function(d){
+            return yScale(d.value);
+        })
+        .attr("dx",function(){
+            return (xScale.bandwidth() -  2 * barMargin)/2;            
+        })
+        .attr("dy",0)
+        .text(function(d){
+            return d.value;
+        });
+
+    // 绘制图例
+    var legendWrap = svg.append("g");
+    var series = legendWrap.append("g").attr("class", "series");
+    //图例形状+样式
+    series.attr("cursor","pointer")
+    series.append("rect")
+            .attr("class","legendPic")                               
+            .attr("width", 20)
+            .attr("height", 10)
+            .attr("x", -18)  
+            .attr("y", -5)                
+            .attr("rx", 2)   
+            .attr("ry", 2)  
+    //图例文本说明
+    series.append("text")
+            .attr("class","legendTxt")
+            .attr("text-anchor", "start")
+            .attr("dy", ".32em")
+            .attr("dx", 12)
+            .text("英文字母")
+    legendWrap.attr("transform", "translate("+(width-3*padding)+", "+(padding)+")");    
+        
+            
+    </script>
+</body>
+</html>

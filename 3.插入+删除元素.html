@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插入删除元素</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <p>a</p>
+    <p id="id">b</p>
+    <p class="class">c</p>
+    <p>d</p>
+    <p id="del">f</p>    
+    
+    
+    <script>
+    /*  插入元素： append()  ：后边插入元素   insert()：前边插入元素
+        删除元素： remove() ： 移除元素
+    */
+
+    var body = d3.select("body");
+    var p = body.selectAll("p");
+
+
+    body.append('p').text('我是在最后一个元素后边新增的元素');
+    body.select('#id').append('p').text('我是在第二个标签后边新增的元素');
+    body.insert('p','.class').text('我是在第三个标签前边新增的元素');
+    body.insert('p','.class').text('我是在第三个标签前边新增的元素');
+    </script>
+</body>
+</html>

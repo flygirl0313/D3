@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>坐标轴</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+    body{
+        padding: 30px;
+    }
+    .axis path,
+    .axis line{
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+
+    .axis text {
+        font-family: sans-serif;
+        font-size: 11px;
+    }
+    .bar {
+        fill: steelblue;
+    }
+    </style>
+</head>
+<body> 
+    <script>
+    var width = 800;  
+    var height = 400; 
+    var padding = 30;  
+ 
+    //画布
+    var svg = d3.select("body")     
+        .append("svg")              
+        .attr("width", width)      //设定高度
+        .attr("height", height)      //设定高度        
+
+    //数据
+    var data1 = [
+        {
+            name:"A",
+            value: 80
+        },{
+            name:"B",
+            value: 110
+        },{
+            name:"C",
+            value: 90
+        },{
+            name:"D",
+            value: 67
+        },{
+            name:"E",
+            value: 89
+        },{
+            name:"F",
+            value: 77
+        },
+    ]   
+
+    //定义比例尺
+    var xScale = d3.scaleBand()                           //比例尺类型 （离散类型）
+        .domain(data1.map(function(d) {return d.name;}))  //比例尺定义域：参数是一个表示一系列值的数组
+        .range([padding,width-padding*2]);                //比例尺值域：让值域的大小随着画布的改变自适应
+        
+    var yScale = d3.scaleLinear()                        //比例尺类型  （线性）
+        .domain([0, d3.max(data1, function(d) {return d.value;})])  //比例尺定义域：参数是一个表示范围的数组
+        .range([height-padding,padding]);
+     
+    //普通坐标轴 
+
+    //定义
+    var xAxis = d3.axisBottom() //坐标轴的位置
+        .scale(xScale)          //指定比例尺
+        .ticks(data1.length)     //指定刻度的数量 
+
+     var yAxis = d3.axisLeft()  
+        .scale(yScale)  
+        .ticks(data1.length); 
+
+    //添加
+    svg.append("g")
+        .attr("class","axis")
+        .call(xAxis)
+        .attr("transform", "translate(0,"+(height-padding)+")")
+        .append("text")
+        .text("字母")
+
+    svg.append("g")
+        .attr("class","axis")
+        .attr("transform","translate("+padding+",0)","rotate(-180deg)")
+        .call(yAxis)         
+       
+    //时间坐标轴 
+    // var x = d3.scaleTime().range([0, width])
+    // var xDataScale = x.domain([new Date(2017, 1), new Date(2017, 4)])
+    // var xAxis = svg.append('g')
+    //             .attr('class','axis')
+    //             .attr("transform","translate(30, 0)")
+    //             .call(d3.axisBottom(xDataScale))
+    
+
+    //从零开始的非连续性x坐标轴
+    // var x = d3.scaleOrdinal().range([150, 300, 450, 600])
+    // var xFromScale = x.domain(['北京', '上海', '广州', '深圳'])
+    // var xAxis = svg.append('g')
+    //            .attr('class', 'axis')
+    //            .attr("transform","translate(30, 0)")
+    //            .call(d3.axisBottom(xFromScale))
+
+
+    // // 不从零开始的非连续性x坐标轴
+    // var x = d3.scaleBand().range([0, width])
+    // var xDomainScale = x.domain(['北京', '上海', '广州', '深圳'])
+    // var xAxis = svg.append('g')
+    //             .attr('class', 'axis')
+    //             .attr("transform","translate(30, 0)")
+    //             .call(d3.axisBottom(xDomainScale))
+
+    
+    </script>
+</body>
+</html>

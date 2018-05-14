@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>交互操作</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body> 
+    <p></p>    
+    <script>
+    var width = 800;  
+    var height = 400; 
+    
+    var svg = d3.select("body")     
+        .append("svg")              
+        .attr("width", width)      //设定高度
+        .attr("height", height)      //设定高度        
+
+    var circle = svg.append("circle")
+        .attr("cx", 100)
+        .attr("cy", 100)
+        .attr("r", 45)
+        .style("fill","yellow");
+    
+    //点击后开始过渡
+    circle.on('click',function(){
+        circle.transition()
+            .duration(2000)
+            .attr("cx", 300)
+            .style("fill","red")
+            .attr("r", 25)    
+    })
+
+    </script>
+</body>
+</html>

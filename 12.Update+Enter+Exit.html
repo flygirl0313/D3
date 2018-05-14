@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update+Enter+Exit</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+   
+    </style>
+</head>
+<body> 
+    <p></p>
+    <p></p>
+    <h1></h1>  
+    <h1></h1>  
+    <h1></h1>      
+    <script>
+    /* 数据量  < 元素量 enter + update */
+    var dataset1 = [0,1,2,3,4,5];
+    //选择body中的p元素
+    var p = d3.select("body").selectAll("p");
+    //获取update部分
+    var update = p.data(dataset1);
+    //获取exit部分
+    var enter = update.enter();
+    //update部分的处理：更新属性值
+    update.text(function(d){
+        return "update " + d;
+    });
+    //enter部分的处理：修改p元素的属性并添加
+    enter.append("p").text(function(d){
+        return "enter";
+    });
+
+    /* 数据量 > 元素量 exit + update */
+    // var dataset2 = [ 3 ];
+    // //选择body中的p元素
+    // var h1 = d3.select("body").selectAll("h1");
+    // //获取update部分
+    // var update = h1.data(dataset2);
+    // //获取exit部分
+    // var exit = update.exit();
+    // //update部分的处理：更新属性值
+    // update.text(function(d){
+    //     return "update " + d;
+    // });
+    // //exit部分的处理：修改p元素的属性
+    // exit.text(function(d){
+    //     return "exit";
+    // });
+    //exit部分的处理通常是删除元素，此处为了方便看没有删除
+    // exit.remove();
+    
+    </script>
+</body>
+</html>
